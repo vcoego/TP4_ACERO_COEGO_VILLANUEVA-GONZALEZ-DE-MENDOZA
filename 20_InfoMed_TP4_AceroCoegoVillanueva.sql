@@ -7,10 +7,10 @@ SELECT m.nombre AS medico,
 FROM Medicos m
 LEFT JOIN Especialidades e ON m.especialidad_id = e.id_especialidad
 LEFT JOIN Consultas c ON m.id_medico = c.id_medico
-    AND c.id_paciente IN (
-        SELECT id_paciente
-        FROM Pacientes
-        WHERE fecha_nacimiento > CURRENT_DATE - INTERVAL '18 years'
-    )
+   AND c.id_paciente IN (
+       SELECT id_paciente
+       FROM Pacientes
+       WHERE EXTRACT(YEAR FROM AGE(CURRENT_DATE, fecha_nacimiento)) < 18
+   )
 GROUP BY m.id_medico, m.nombre, e.nombre
 ORDER BY m.nombre;
